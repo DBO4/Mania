@@ -1,58 +1,37 @@
 <?php
-require_once 'vendor/autoload.php';
-
-use Firebase\JWT\JWT;
-
-// provjeri da li je korisnik poslao podatke iz forme
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['email']) && isset($_POST['password'])) {
-    $username = $_POST['email'];
-    $password = $_POST['password'];
-
-    // provjeri da li je korisničko ime i lozinka ispravni
-    //if ($username == 'korisnik' && $password == 'lozinka') {
-        // postavi podatke za payload
-        $payload = [
-            'username' => $username,
-            'exp' => time() + (60 * 60) // token vrijedi jedan sat
-        ];
-
-        // postavi ključ za potpisivanje tokena
-        $key = 'tajni_kljuc';
-
-        // postavi podatke za header
-        $header = [
-            'typ' => 'JWT',
-            'alg' => 'HS256'
-        ];
-
-        // generiraj JWT token
-        $jwt = JWT::encode($payload, $key, 'HS256', null, $header);
-
-        // spremanje tokena u session
-       
-        $_SESSION['jwt'] = $jwt;
-        
-        session_start();
-        // preusmjeri korisnika na početnu stranicu
-        //header('Location: index.php');
-        //exit;
-    /*} else {
-        echo 'Pogrešno korisničko ime ili lozinka.';
-    }*/
-}
+    if (session_status() == PHP_SESSION_NONE) {
+      session_start();
+    }
+    require 'generisiToken.php';
 ?>
 
+<head>
+  <link rel="stylesheet" type="text/css" href="Sminka\izgled.css">
 
 
-<form method="post" action="pregledajPrijavu.php">
-  <div>
-        <label for="email">Email:</label> 
-        <input type="text" id="email" name="email" maxlength="100" required>
-    </div>
+  <video autoplay muted loop id="myVideo">
+      <source src="Sminka\back.mp4" type="video/mp4">
+  </video>
+</head>
+
+<div class="container">
+  <form method="post" action="pregledajPrijavu.php">
+  <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
     <div>
-        <label for="sifra">Šifra:</label>
-        <input type="password" id="sifra" name="sifra" maxlength="100" required>
-    </div>
-  
-  <button type="submit">Prijavi se</button>
-</form>
+          <label for="email">Email:</label> 
+          <input type="text" id="email" name="email" maxlength="100" required>
+      </div>
+      <div>
+          <label for="sifra">Šifra:</label>
+          <input type="password" id="sifra" name="sifra" maxlength="100" required>
+      </div>
+    
+    <button class="button" type="submit">Prijavi se</button>
+    <button class = "button" onclick="goBack()">Nazad</button>
+  </form>
+</div>
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>

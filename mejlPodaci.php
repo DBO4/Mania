@@ -1,5 +1,12 @@
 <!DOCTYPE html>
+<?php
 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'generisiToken.php';
+
+?>
 <html >
     <head>
         <meta charset="utf-8">
@@ -7,19 +14,20 @@
 
         <title>Mania mejlovi</title>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="Sminka\izgled.css">
 
-        <!-- Styles -->
+
+        <video autoplay muted loop id="myVideo">
+            <source src="Sminka\back.mp4" type="video/mp4">
+        </video>
         
     </head>
     <body class="antialiased">
-        <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
+        <div class="container">
         <form method="POST" action="mejl.php?id=<?php echo $_GET['id']; ?>">
+            <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
             <?php
-                session_start();
-                require_once 'provjeriToken.php';
+                
                 // nastavak koda
             
                 $uid = $_GET['id'];    
@@ -52,11 +60,16 @@
                 <textarea id="tekst" name="tekst" maxlength="3000" required></textarea>
             </div>
             <div>
-                <button name="btnPosalji" value="Posalji" type="submit">Pošalji</button>
+                <button name="btnPosalji" class = "button" value="Posalji" type="submit">Pošalji</button>
             </div>
        
         </form>
-        
+        <button class = "button" onclick="goBack()">Nazad</button>
         </div>
     </body>
 </html>
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>

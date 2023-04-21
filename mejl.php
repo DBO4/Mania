@@ -1,7 +1,9 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 require_once 'provjeriToken.php';
-
+ 
 $ime = $_POST['ime'];
 $email = $_POST['email'];
 $naslov = $_POST['naslov'];
@@ -19,7 +21,7 @@ use PHPMailer\PHPMailer\Exception;
 include ('vendor/autoload.php');
 
 
-//Create an instance; passing `true` enables exceptions
+//Create an instance; passing `true` enables exceptions           
 $mail = new PHPMailer(true);
 
 try {

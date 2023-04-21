@@ -1,8 +1,10 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+  session_start();
+}
 require_once 'provjeriToken.php';
 
-// Uključivanje datoteke koja sadrži PDO konekciju
+// Uključivanje datoteke koja sadrži PDO konekciju 
 require_once 'baza.php';
 
 // Provjera da li su podaci poslani POST metodom

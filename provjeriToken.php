@@ -1,23 +1,19 @@
 <?php
-require_once 'vendor/autoload.php';
 
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
-// Postavi ključ za potpisivanje tokena
-$key = 'tajni_kljuc';
-
-//session_start();
-// Dohvati JWT token
-$jwt = $_SESSION['jwt'];
-
-try {
-    // Provjeri i dekodiraj JWT token
-    $payload = JWT::decode($jwt, new Key($key,'HS256'), ['HS256']);
-
-    // Ispiši korisničko ime
-    //echo 'Korisnik: ' ;
-} catch (Exception $e) {
-    // Token nije valjan ili je istekao
-    echo 'Neuspješna autentifikacija'.JWT::decode($jwt, $key, ['HS256']);
+if (!isset($_SESSION['csrf_token'])) {
+    die('Nije moguće pristupiti stranici bez valjanog tokena!');
 }
+
+// provjeravamo postoji li token u zahtjevu
+if (isset($_POST['csrf_token'])) {
+    // provjeravamo podudara li se token iz sjednice sa tokenom u zahtjevu
+    if ($_POST['csrf_token'] === $_SESSION['csrf_token']) {
+      // tokeni se podudaraju - nastavljamo sa obradom zahtjeva
+      //echo "Dobra";
+    } else {
+      echo 'Tokeni se ne podudaraju';
+    }
+  } else {
+    echo 'zahtjev nema token'; 
+  }
 ?>

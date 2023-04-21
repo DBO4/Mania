@@ -1,4 +1,28 @@
+<?php
+    require 'Tokenizacija.php';
+?>
+
+
+<head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Mania meni</title>
+
+        <link rel="stylesheet" type="text/css" href="Sminka\izgled.css">
+
+
+        <video autoplay muted loop id="myVideo">
+            <source src="Sminka\back.mp4" type="video/mp4">
+        </video>
+
+        <!-- Styles -->
+        
+    </head>
+
+<div class="container">
 <form method="post" action="unesiPodatkeZaKorisnika.php" onsubmit="return validateForm()">
+ <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
   <div>
         <label for="ime">Ime:</label> 
         <input type="text" id="ime" name="ime" maxlength="100" required>
@@ -20,5 +44,15 @@
         <input type="checkbox" id="jeAdmin" name="jeAdmin">
     </div>
   
-  <button type="submit">Registracija</button>
+  <button class="button" type="submit">Registracija</button>
+  <button class = "button" onclick="goBack()">Nazad</button>
 </form>
+
+</div>
+
+
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
